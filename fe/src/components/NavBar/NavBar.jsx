@@ -3,11 +3,12 @@ import "./NavBar.css";
 
 export const NavBar = () => {
   return (
-    <nav className="navbar navbar-expand-md border-bottom border-1 border-gray navbar-light">
+    <nav className="navbar navbar-expand-md border-bottom border-1 border-gray bg-black">
       <div className="container-fluid">
         <button
           className="navbar-toggler"
           type="button"
+          data-bs-theme="dark"
           data-bs-toggle="collapse"
           data-bs-target="#navbar-toggler"
           aria-controls="navbarTogglerDemo01"
@@ -20,7 +21,7 @@ export const NavBar = () => {
           className="collapse navbar-collapse justify-content-between align-items-center p-2"
           id="navbar-toggler"
         >
-          <a className="navbar-brand d-none d-md-block" href="#">
+          <a className="navbar-brand d-none d-md-block text-white" href="#">
             Ocassio
           </a>
           <ul className="navbar-nav d-flex justify-content-center align-items-center">

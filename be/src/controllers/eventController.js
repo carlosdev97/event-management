@@ -3,28 +3,44 @@ const Event = require("../models/event");
 
 exports.createEvent = async (req, res) => {
   try {
-    const { title, description, date, eventTime, location, userId } = req.body;
+    const {
+      image,
+      title,
+      description,
+      eventDate,
+      eventTime,
+      location,
+      userId,
+    } = req.body;
 
-    if (!title || !description || !date || !eventTime || !location || !userId) {
+    if (
+      !image ||
+      !title ||
+      !description ||
+      !eventDate ||
+      !eventTime ||
+      !location ||
+      !userId
+    ) {
       return res
         .status(400)
         .json({ success: false, message: "Faltan campos obligatorios" });
     }
 
     const user = await User.findById(userId);
+
     if (!user) {
       return res
         .status(404)
         .json({ success: false, message: "Usuario no encontrado" });
     }
 
-    const eventDate = new Date(date);
-
     const newEvent = await Event.create({
+      image,
       title,
       description,
-      eventDate: eventDate,
-      eventTime: eventTime,
+      eventDate,
+      eventTime,
       location,
       createdBy: userId,
     });
@@ -160,14 +176,12 @@ exports.deleteEvent = async (req, res) => {
 
 exports.filterEvents = async (req, res) => {
   try {
-    const { startDate, endDate, city, country } = req.query;
+    const { date, city, search } = req.query;
 
     const query = {};
 
-    if (startDate || endDate) {
-      query.eventDate = {};
-      if (startDate) query.eventDate.$gte = new Date(startDate);
-      if (endDate) query.eventDate.$lte = new Date(endDate);
+    if (date) {
+      query.date = new Date(startDate);
     }
 
     // Filtro por ciudad
@@ -175,16 +189,20 @@ exports.filterEvents = async (req, res) => {
       query["location.city"] = { $regex: new RegExp(city, "i") };
     }
 
-    // Filtro por país
-    if (country) {
-      query["location.country"] = { $regex: new RegExp(country, "i") };
+    if (search) {
+      query.$or = [
+        { title: { $regex: new RegExp(search, "i") } },
+        { description: { $regex: new RegExp(search, "i") } },
+        { "location.city": { $regex: new RegExp(search, "i") } },
+      ];
     }
 
     const events = await Event.find(query);
 
     if (events.length === 0) {
-      return res.status(404).json({
-        success: false,
+      return res.status(200).json({
+        success: true,
+        data: [],
         message: "No se encontraron eventos con los filtros proporcionados",
       });
     }
