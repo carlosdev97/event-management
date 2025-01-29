@@ -1,31 +1,32 @@
-import { useState } from "react";
-import api from "../../services/api";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 import "./Form.css";
 
 export const Form = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const login = async (event) => {
-    event.preventDefault();
+  const { login, user } = useAuth();
+  const navigate = useNavigate();
 
-    try {
-      const response = await api.post(
-        "http://localhost:5000/api/users/login",
-        JSON.stringify({ email, password })
-      );
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
-    }
+  const handleLogin = async (event) => {
+    event.preventDefault();
+    await login(email, password); // Asegúrate de que login sea asíncrono
   };
+
+  useEffect(() => {
+    if (user) {
+      navigate("/user-events"); // Navegar si user está definido
+    }
+  }, [user, navigate]);
 
   return (
     <div className="container p-5">
       <div className="row justify-content-center">
         <form
           className="col-lg-5 shadow rounded-3 p-5 d-flex flex-column gap-2"
-          onSubmit={login}
+          onSubmit={handleLogin}
         >
           <div className="mb-3">
             <label htmlFor="inputEmail" className="form-label fw-bold">

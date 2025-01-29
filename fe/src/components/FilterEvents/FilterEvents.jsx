@@ -1,31 +1,12 @@
 import { useState } from "react";
-import api from "../../services/api";
-export const FilterEvents = () => {
+export const FilterEvents = ({ onFilter }) => {
   const [search, setSearch] = useState("");
   const [city, setCity] = useState("");
   const [date, setDate] = useState("");
 
   const findQuery = async (event) => {
     event.preventDefault();
-
-    const queryParams = {};
-
-    if (search.trim()) queryParams.search = search.trim();
-    if (city.trim()) queryParams.city = city.trim();
-    if (date.trim()) queryParams.date = date.trim();
-
-    const queryString = new URLSearchParams(queryParams).toString();
-
-    console.log("Query string generada:", queryString);
-
-    try {
-      const response = await api.get(
-        `http://localhost:5000/api/events/filter?${queryString}`
-      );
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
-    }
+    onFilter(search, city, date);
   };
 
   return (

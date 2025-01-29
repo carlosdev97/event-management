@@ -1,6 +1,6 @@
 import "./CardEvent.css";
-import { TbCalendar, TbClock, TbMapPin } from "react-icons/tb";
-export const CardEvent = ({ event }) => {
+import { TbCalendar, TbClock, TbMapPin, TbTrash, TbEdit } from "react-icons/tb";
+export const CardEvent = ({ event, showActions }) => {
   return (
     <div className="card mb-3" style={{ width: "100%" }}>
       <div className="row g-0">
@@ -11,8 +11,8 @@ export const CardEvent = ({ event }) => {
             alt="..."
           />
         </div>
-        <div className="col-lg-10">
-          <div className="card-body col-lg-12">
+        <div className="col-lg-10 d-none d-md-flex d-block">
+          <div className="card-body col-lg-11">
             <h5 className="card-title">{event.title}</h5>
             <p className="card-text align-items-center d-flex gap-2 m-0">
               <TbCalendar className="fs-5" /> {event.eventDate}
@@ -28,6 +28,14 @@ export const CardEvent = ({ event }) => {
               </p>
             </div>
           </div>
+          {showActions ? (
+            <div className="col-lg-1 d-flex p-2 ">
+              <TbEdit className="fs-3" />
+              <TbTrash className="fs-3" />
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </div>

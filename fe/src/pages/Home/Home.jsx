@@ -19,12 +19,35 @@ export const Home = () => {
     getEvents();
   }, []);
 
+  const handleFilter = async (search, city, date) => {
+    const queryParams = {};
+
+    if (search.trim()) queryParams.search = search.trim();
+    if (city.trim()) queryParams.city = city.trim();
+    if (date.trim()) queryParams.date = date.trim();
+
+    const queryString = new URLSearchParams(queryParams).toString();
+
+    try {
+      const response = await api.get(
+        `http://localhost:5000/api/events/filter?${queryString}`
+      );
+      setEvents(response.data.events);
+    } catch (error) {
+      console.error("Error al filtrar eventos:", error);
+    }
+  };
+
   return (
-    <div className="container my-4 d-flex justify-content-around flex-wrap">
-      <FilterEvents />
-      {events.map((event) => (
-        <CardEvent key={event._id} event={event} />
-      ))}
+    <div className="container my-4 d-flex justify-content-around flex-wrap align-items-center">
+      <FilterEvents onFilter={handleFilter} />
+      {events ? (
+        events.map((event) => (
+          <CardEvent key={event._id} event={event} showActions={false} />
+        ))
+      ) : (
+        <p>No hay eventos disponibles</p>
+      )}
     </div>
   );
 };
