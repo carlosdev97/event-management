@@ -115,7 +115,7 @@ exports.updateEvent = async (req, res) => {
   try {
     const { eventId } = req.params;
 
-    const { title, description, date, eventTime, location } = req.body;
+    const { title, description, eventDate, eventTime, location } = req.body;
 
     const event = await Event.findById(eventId);
 
@@ -130,7 +130,7 @@ exports.updateEvent = async (req, res) => {
       {
         title,
         description,
-        eventDate: new Date(date),
+        eventDate,
         eventTime,
         location,
       },

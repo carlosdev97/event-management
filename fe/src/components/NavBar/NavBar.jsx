@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import { TbLogout } from "react-icons/tb";
+import { TbDoorExit, TbUserCircle } from "react-icons/tb";
 import "./NavBar.css";
 
 export const NavBar = () => {
@@ -21,13 +21,14 @@ export const NavBar = () => {
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
     if (savedUser) {
-      const userObj = JSON.parse(savedUser);
-      setUser(userObj);
+      setUser(JSON.parse(savedUser));
+    } else {
+      setUser(null);
     }
   }, [location]);
 
   return (
-    <nav className="navbar navbar-expand-md border-bottom border-1 border-gray bg-black">
+    <nav className="navbar navbar-expand-md bg-black">
       <div className="container-fluid">
         <button
           className="navbar-toggler"
@@ -41,21 +42,40 @@ export const NavBar = () => {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
+        {user ? (
+          <div className="d-md-none">
+            <p className="text-white d-flex align-items-center m-0">
+              Hola, {user.name.split(" ")[0]}
+            </p>
+          </div>
+        ) : (
+          <></>
+        )}
         <div
           className="collapse navbar-collapse justify-content-between align-items-center p-2"
           id="navbar-toggler"
         >
-          <a className="navbar-brand d-none d-md-block text-white" href="#">
+          <Link className="navbar-brand d-none d-md-block text-white" to={"/"}>
             Ocassio
-          </a>
-          {location.pathname === "/user-events" && user ? (
+          </Link>
+          {user ? (
             <>
-              <div className="text-white d-flex align-items-center gap-2">
-                Hola, {user.name.split(" ")[0]}
-                <TbLogout
-                  className="text-danger fs-4 cursor-pointer"
+              <div className="text-white d-flex flex-column flex-md-row align-items-center gap-2">
+                <TbUserCircle className="btn-user-custom fs-4 d-none d-md-block" />
+                <p className="m-0 d-none d-md-block">
+                  Hola, {user.name.split(" ")[0]}
+                </p>
+                <TbDoorExit
+                  className="btn-logout-custom text-danger fs-4 cursor-pointer d-none d-md-block"
                   onClick={handleLogout}
                 />
+                <button
+                  type="button"
+                  className="btn btn-danger d-block d-md-none"
+                  onClick={handleLogout}
+                >
+                  Salir
+                </button>
               </div>
             </>
           ) : (

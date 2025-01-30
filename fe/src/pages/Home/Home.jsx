@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { CardEvent } from "../../components/CardEvent/CardEvent";
-import { FilterEvents } from "../../components/FilterEvents/FilterEvents";
-import api from "../../services/api";
+import { CardEvent } from "../../components/CardEvent/CardEvent"; // Componente de tarjeta
+import { FilterEvents } from "../../components/FilterEvents/FilterEvents"; // Componente para filtrar
+import api from "../../services/api"; // Servicio de peticiones al servidor
 
 export const Home = () => {
+  // Componente "Home" exportado
   const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getEvents = async () => {
@@ -13,6 +15,8 @@ export const Home = () => {
         setEvents(response.data.events);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false); // Finalizar la carga del evento
       }
     };
 
@@ -40,13 +44,23 @@ export const Home = () => {
 
   return (
     <div className="container my-4 d-flex justify-content-around flex-wrap align-items-center">
-      <FilterEvents onFilter={handleFilter} />
-      {events ? (
-        events.map((event) => (
-          <CardEvent key={event._id} event={event} showActions={false} />
-        ))
+      {loading ? (
+        <div className="d-flex justify-content-center">
+          <div className="spinner-border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
       ) : (
-        <p>No hay eventos disponibles</p>
+        <>
+          <FilterEvents onFilter={handleFilter} />
+          {events && events.length > 0 ? (
+            events.map((event) => (
+              <CardEvent key={event._id} event={event} showActions={false} />
+            ))
+          ) : (
+            <p>No hay eventos disponibles</p>
+          )}
+        </>
       )}
     </div>
   );

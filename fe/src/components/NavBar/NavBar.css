@@ -5,3 +5,7 @@
 .btn-custom:hover {
   color: #0b5ed7;
 }
+
+.btn-logout-custom {
+  cursor: pointer;
+}

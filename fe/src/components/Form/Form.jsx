@@ -6,13 +6,20 @@ import "./Form.css";
 export const Form = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const { login, user } = useAuth();
   const navigate = useNavigate();
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    await login(email, password); // Asegúrate de que login sea asíncrono
+    try {
+      await login(email, password); // Asegúrate de que login sea asíncrono
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -54,13 +61,23 @@ export const Form = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <button
-            type="submit"
-            className="btn bg-black text-white"
-            disabled={!email || !password}
-          >
-            Ingresar
-          </button>
+          {loading ? (
+            <button className="btn bg-black text-white" type="button" disabled>
+              <span
+                className="spinner-border spinner-border-sm"
+                aria-hidden="true"
+              ></span>
+              <span role="status">Loading...</span>
+            </button>
+          ) : (
+            <button
+              type="submit"
+              className="btn bg-black text-white"
+              disabled={!email || !password}
+            >
+              Ingresar
+            </button>
+          )}
           <button type="button" className="btn btn-link">
             ¿Olvidaste tu contraseña?
           </button>

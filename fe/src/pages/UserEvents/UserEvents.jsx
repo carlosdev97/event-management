@@ -1,6 +1,8 @@
 import { CardEvent } from "../../components/CardEvent/CardEvent";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../contexts/AuthContext";
+import { TbPlus } from "react-icons/tb";
+import { Link } from "react-router-dom";
 import api from "../../services/api";
 
 export const UserEvents = () => {
@@ -44,6 +46,19 @@ export const UserEvents = () => {
 
   return (
     <div className="container my-4 d-flex justify-content-around flex-wrap align-items-center">
+      <Link
+        className="nav-link active col"
+        aria-current="page"
+        to="/user-events/add"
+      >
+        <button
+          type="button"
+          className="btn btn-success col-12 mb-4 d-flex align-items-center justify-content-center gap-2"
+        >
+          <TbPlus />
+          Agregar evento
+        </button>
+      </Link>
       {events ? (
         events.map((event) => (
           <CardEvent key={event._id} event={event} showActions={true} />
