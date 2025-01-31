@@ -153,15 +153,17 @@ exports.updateEvent = async (req, res) => {
 
 exports.deleteEvent = async (req, res) => {
   try {
-    const event = await Event.findById(req.params.id);
+    const { eventId } = req.params;
+
+    const event = await Event.findById(eventId);
 
     if (!event) {
       return res
         .status(404)
-        .json({ success: false, message: "Evento no encontrado" });
+        .json({ success: false, message: "Evento no encontrado", id: event });
     }
 
-    await Event.findByIdAndDelete(req.params.id);
+    await Event.findByIdAndDelete(eventId);
     res
       .status(204)
       .json({ success: true, message: "Evento eliminado correctamente" });

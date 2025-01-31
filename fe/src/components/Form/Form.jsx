@@ -13,6 +13,7 @@ export const Form = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault();
+    setLoading(true);
     try {
       await login(email, password); // Asegúrate de que login sea asíncrono
     } catch (error) {
@@ -62,12 +63,16 @@ export const Form = () => {
             />
           </div>
           {loading ? (
-            <button className="btn bg-black text-white" type="button" disabled>
+            <button
+              className="btn bg-black text-white d-flex gap-2 align-items-center justify-content-center"
+              type="button"
+              disabled
+            >
               <span
                 className="spinner-border spinner-border-sm"
                 aria-hidden="true"
               ></span>
-              <span role="status">Loading...</span>
+              <span role="status">Cargando...</span>
             </button>
           ) : (
             <button

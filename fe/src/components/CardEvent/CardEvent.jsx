@@ -1,8 +1,18 @@
 import "./CardEvent.css";
 import { TbCalendar, TbClock, TbMapPin, TbTrash, TbEdit } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
+import api from "../../services/api";
 export const CardEvent = ({ event, showActions }) => {
   const navigate = useNavigate();
+
+  const handleDelete = async () => {
+    try {
+      await api.delete(`http://localhost:5000/api/events/${event._id}`);
+      window.location.reload();
+    } catch (error) {
+      console.error("Error eliminando el evento:", error);
+    }
+  };
 
   return (
     <div className="card mb-3" style={{ width: "100%" }}>
@@ -46,6 +56,7 @@ export const CardEvent = ({ event, showActions }) => {
               <button
                 type="button"
                 className="btn btn-danger d-flex align-items-center justify-content-center gap-2"
+                onClick={handleDelete}
               >
                 <TbTrash className="fs-4" />
                 Eliminar

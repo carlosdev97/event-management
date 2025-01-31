@@ -6,6 +6,7 @@ export const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -19,10 +20,13 @@ export const Register = () => {
     };
 
     try {
+      setLoading(true);
       await api.post("http://localhost:5000/api/users/register", user);
       navigate("/login");
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -72,9 +76,23 @@ export const Register = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <button type="submit" className="btn bg-black text-white">
-            Registrarse
-          </button>
+          {loading ? (
+            <button
+              className="btn bg-black text-white d-flex gap-2 align-items-center justify-content-center"
+              type="button"
+              disabled
+            >
+              <span
+                className="spinner-border spinner-border-sm"
+                aria-hidden="true"
+              ></span>
+              <span role="status">Cargando...</span>
+            </button>
+          ) : (
+            <button type="submit" className="btn bg-black text-white">
+              Registrarse
+            </button>
+          )}
         </form>
       </div>
     </div>

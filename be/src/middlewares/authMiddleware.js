@@ -4,7 +4,7 @@ const middlewareAuth = (req, res, next) => {
   const token = req.headers["authorization"]?.split(" ")[1];
   if (!token) {
     return res.status(403).json({
-      mensaje: "¡Se requiere token de autenticación!",
+      message: "¡Se requiere token de autenticación!",
     });
   }
 
@@ -12,7 +12,7 @@ const middlewareAuth = (req, res, next) => {
     if (error) {
       return res
         .status(401)
-        .json({ mensaje: "Token invalido", error: error.message });
+        .json({ message: "Token invalido", error: error.message });
     }
     req.user = decoded;
     next();

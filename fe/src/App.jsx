@@ -7,10 +7,16 @@ import { Register } from "./pages/Register/Register";
 import { UserEvents } from "./pages/UserEvents/UserEvents";
 import { FormAddEvent } from "./pages/FormAddEvent/FormAddEvent";
 import { FormEditEvent } from "./pages/FormEditEvent/FormEditEvent";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
     <Router>
+      <Toaster
+        toastOptions={{ duration: 5000 }}
+        position="bottom-right"
+        reverseOrder={false}
+      />
       <NavBar />
       <Routes>
         <Route path="/" element={<Home />} />

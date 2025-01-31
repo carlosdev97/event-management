@@ -182,9 +182,23 @@ export const FormAddEvent = () => {
               }
             />
           </div>
-          <button type="submit" className="btn bg-black text-white">
-            Agregar
-          </button>
+          {loading ? (
+            <button
+              className="btn bg-black text-white d-flex gap-2 align-items-center justify-content-center"
+              type="button"
+              disabled
+            >
+              <span
+                className="spinner-border spinner-border-sm"
+                aria-hidden="true"
+              ></span>
+              <span role="status">Cargando...</span>
+            </button>
+          ) : (
+            <button type="submit" className="btn bg-black text-white">
+              Agregar
+            </button>
+          )}
         </form>
       </div>
     </div>
