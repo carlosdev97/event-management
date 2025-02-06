@@ -42,25 +42,15 @@ export const CardEvent = ({ event, showActions }) => {
             </div>
           </div>
           {showActions ? (
-            <div className="col-lg-3 p-2 d-flex flex-lg-column gap-4 justify-content-center">
-              <button
-                type="button"
-                className="btn btn-info d-flex align-items-center justify-content-center gap-2"
-                onClick={() =>
-                  navigate(`/user-events/edit/${event._id}`, { state: event })
-                }
-              >
-                <TbEdit className="fs-4" />
+            <div className="col-lg-2 d-flex flex-lg-row justify-content-center">
+              <div className="bg-success h-100 px-3 d-flex flex-column justify-content-center align-items-center rounded-2">
+                <TbEdit />
                 Editar
-              </button>
-              <button
-                type="button"
-                className="btn btn-danger d-flex align-items-center justify-content-center gap-2"
-                onClick={handleDelete}
-              >
-                <TbTrash className="fs-4" />
+              </div>
+              <div className="bg-danger h-100 flex-grow-1 px-3 d-flex flex-column justify-content-center align-items-center rounded-2">
+                <TbTrash />
                 Eliminar
-              </button>
+              </div>
             </div>
           ) : (
             <></>
@@ -70,3 +60,13 @@ export const CardEvent = ({ event, showActions }) => {
     </div>
   );
 };
+
+// Boton Editar //
+
+// onClick={() =>
+//                   navigate(`/user-events/edit/${event._id}`, { state: event })
+//                 }
+
+// Boton Eliminar //
+
+// onClick = { handleDelete };

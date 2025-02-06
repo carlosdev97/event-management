@@ -47,7 +47,12 @@ export const AuthProvider = ({ children }) => {
 
       setUser(userData);
     } catch (err) {
-      setError(err.message || "Error en el login.");
+      console.log(err);
+      if (err.status === 404) {
+        return err.status;
+      } else if (err.status === 401) {
+        return err.status;
+      }
     } finally {
       setLoading(false);
     }

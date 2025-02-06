@@ -17,6 +17,7 @@ export const FormEditEvent = () => {
     country: event.location.country,
   });
   const [description, setDescription] = useState(event.description);
+  const [loading, setLoading] = useState(false);
 
   if (!event) {
     navigate("/user-events");
@@ -29,6 +30,7 @@ export const FormEditEvent = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const updatedEvent = {
       image,
       title,
@@ -40,17 +42,15 @@ export const FormEditEvent = () => {
     };
 
     try {
-      const response = await api.put(
+      await api.put(
         `http://localhost:5000/api/events/${event._id}`,
         updatedEvent
       );
 
+      setLoading(false);
       navigate("/user-events");
     } catch (err) {
       console.error(err);
-      // setError(err.message || "Error desconocido");
-      // } finally {
-      //   setLoading(false);
     }
   };
 
@@ -168,9 +168,23 @@ export const FormEditEvent = () => {
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
-          <button type="submit" className="btn bg-black text-white">
-            Actualizar
-          </button>
+          {loading ? (
+            <button
+              className="btn bg-black text-white d-flex gap-2 align-items-center justify-content-center"
+              type="button"
+              disabled
+            >
+              <span
+                className="spinner-border spinner-border-sm"
+                aria-hidden="true"
+              ></span>
+              <span role="status">Cargando...</span>
+            </button>
+          ) : (
+            <button type="submit" className="btn bg-black text-white">
+              Actualizar
+            </button>
+          )}
         </form>
       </div>
     </div>

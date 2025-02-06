@@ -4,7 +4,6 @@ import { FilterEvents } from "../../components/FilterEvents/FilterEvents"; // Co
 import api from "../../services/api"; // Servicio de peticiones al servidor
 
 export const Home = () => {
-  // Componente "Home" exportado
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -43,7 +42,7 @@ export const Home = () => {
   };
 
   return (
-    <div className="container my-4 d-flex justify-content-around flex-wrap align-items-center">
+    <div className="container my-4 d-flex justify-content-around flex-wrap align-items-center min-vh-100">
       {loading ? (
         <div className="d-flex justify-content-center">
           <div className="spinner-border" role="status">

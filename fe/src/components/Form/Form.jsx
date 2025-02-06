@@ -6,20 +6,19 @@ import "./Form.css";
 export const Form = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const { login, user } = useAuth();
+  const [emailIsValid, setEmailIsValid] = useState(true);
+  const [passwordIsValid, setPasswordIsValid] = useState(true);
+  const { user, loading, login } = useAuth();
   const navigate = useNavigate();
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    setLoading(true);
-    try {
-      await login(email, password); // Asegúrate de que login sea asíncrono
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
+    const response = await login(email, password); // Asegúrate de que login sea asíncrono
+    if (response === 404) {
+      setEmailIsValid(false);
+    } else if (response === 401) {
+      setPasswordIsValid(false);
+      console.log(passwordIsValid);
     }
   };
 
@@ -36,31 +35,55 @@ export const Form = () => {
           className="col-lg-5 shadow rounded-3 p-5 d-flex flex-column gap-2"
           onSubmit={handleLogin}
         >
-          <div className="mb-3">
+          <div className="mb-2">
             <label htmlFor="inputEmail" className="form-label fw-bold">
               Email
             </label>
             <input
               type="email"
-              className="form-control"
+              className={`form-control ${emailIsValid ? "" : "is-invalid"}`}
               id="inputEmail"
               placeholder="name@example.com"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value), setEmailIsValid(true);
+              }}
             />
+            {emailIsValid ? (
+              <></>
+            ) : (
+              <div
+                id="validationServerUsernameFeedback"
+                className="invalid-feedback"
+              >
+                Por favor ingrese un correo válido.
+              </div>
+            )}
           </div>
-          <div className="mb-3">
+          <div className="mb-2">
             <label htmlFor="inputPassword" className="form-label fw-bold">
               Password
             </label>
             <input
               type="password"
-              className="form-control"
+              className={`form-control ${passwordIsValid ? "" : "is-invalid"}`}
               id="inputPassword"
               placeholder="********"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value), setPasswordIsValid(true);
+              }}
             />
+            {passwordIsValid ? (
+              <></>
+            ) : (
+              <div
+                id="validationServerUsernameFeedback"
+                className="invalid-feedback"
+              >
+                Contraseña incorrecta.
+              </div>
+            )}
           </div>
           {loading ? (
             <button
