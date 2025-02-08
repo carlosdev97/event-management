@@ -10,10 +10,14 @@ export const FilterEvents = ({ onFilter }) => {
   };
 
   return (
-    <div className="row w-100 d-flex justify-content-around">
-      <form className="d-flex mb-4 col" role="search" onSubmit={findQuery}>
+    <div className="row d-flex mx-1">
+      <form
+        className="d-flex gap-2 mb-4 p-0 col-12"
+        role="search"
+        onSubmit={findQuery}
+      >
         <input
-          className="form-control me-2"
+          className="form-control"
           type="search"
           placeholder="Busca por evento, artista o lugar..."
           aria-label="Search"
@@ -21,7 +25,7 @@ export const FilterEvents = ({ onFilter }) => {
           onChange={(e) => setSearch(e.target.value)}
         />
         <select
-          className="form-select me-2 d-none d-lg-block"
+          className="form-select d-none d-lg-block"
           aria-label="Selecciona una ciudad"
           value={city}
           onChange={(e) => setCity(e.target.value)}
@@ -62,7 +66,7 @@ export const FilterEvents = ({ onFilter }) => {
         </select>
 
         <input
-          className="form-control me-2 d-none d-lg-block"
+          className="form-control d-none d-lg-block"
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
@@ -71,7 +75,7 @@ export const FilterEvents = ({ onFilter }) => {
           className="btn btn-outline-success d-none d-lg-block"
           type="submit"
         >
-          Search
+          Buscar
         </button>
       </form>
     </div>

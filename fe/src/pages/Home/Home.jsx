@@ -42,7 +42,7 @@ export const Home = () => {
   };
 
   return (
-    <div className="container my-4 d-flex justify-content-around flex-wrap align-items-center min-vh-100">
+    <div className="container my-4 flex-wrap min-vh-100">
       {loading ? (
         <div className="d-flex justify-content-center">
           <div className="spinner-border" role="status">

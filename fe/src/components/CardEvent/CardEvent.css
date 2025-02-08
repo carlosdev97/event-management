@@ -1,3 +1,7 @@
 .custom-img {
   object-fit: cover;
 }
+
+.btn-actions:hover {
+  cursor: pointer;
+}

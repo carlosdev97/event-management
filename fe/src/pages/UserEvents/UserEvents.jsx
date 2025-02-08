@@ -10,7 +10,6 @@ export const UserEvents = () => {
   const { user, logout } = useAuth(); // Asegúrate de que tu AuthContext tenga una función logout
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   const navigate = useNavigate();
 
@@ -20,7 +19,6 @@ export const UserEvents = () => {
 
       try {
         setLoading(true);
-        setError(null);
 
         const response = await api.get(
           `http://localhost:5000/api/events/${user.id}`
@@ -30,18 +28,11 @@ export const UserEvents = () => {
         setEvents(data);
       } catch (error) {
         if (error.response && error.response.status === 401) {
-          // Token expirado
-          setError(
-            "Tu sesión ha expirado. Por favor, inicia sesión nuevamente."
-          );
-          logout(); // Limpia el estado de autenticación
-          toast.error(
-            "Tu sesión ha expirado. Por favor, inicia sesión nuevamente."
-          );
-          navigate("/login"); // Redirige al componente de login
+          logout();
+          toast.error("La sesión ha caducado");
+          navigate("/login");
         } else {
           console.log(error);
-          setError("Ocurrió un error al cargar los eventos.");
         }
       } finally {
         setLoading(false);
@@ -52,7 +43,7 @@ export const UserEvents = () => {
   }, [user, navigate, logout]);
 
   return (
-    <div className="container min-vh-100 my-4 d-flex justify-content-around flex-wrap">
+    <div className="container min-vh-100 my-4 flex-wrap">
       {loading ? (
         <div className="d-flex min-vh-100 justify-content-center align-items-center">
           <div className="spinner-border" role="status">
@@ -61,11 +52,6 @@ export const UserEvents = () => {
         </div>
       ) : (
         <>
-          {error && (
-            <div className="alert alert-danger" role="alert">
-              {error}
-            </div>
-          )}
           <Link
             className="nav-link active col"
             aria-current="page"

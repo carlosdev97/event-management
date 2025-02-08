@@ -42,12 +42,20 @@ export const CardEvent = ({ event, showActions }) => {
             </div>
           </div>
           {showActions ? (
-            <div className="col-lg-2 d-flex flex-lg-row justify-content-center">
-              <div className="bg-success h-100 px-3 d-flex flex-column justify-content-center align-items-center rounded-2">
+            <div className="col-lg-2 d-flex flex-lg-column justify-content-center gap-lg-2 mx-lg-2">
+              <div
+                className="btn-actions bg-transparent px-3 py-2 d-flex justify-content-center align-items-center rounded-5 border border-2 border-success text-success gap-2 flex-grow-1 flex-lg-grow-0"
+                onClick={() =>
+                  navigate(`/user-events/edit/${event._id}`, { state: event })
+                }
+              >
                 <TbEdit />
                 Editar
               </div>
-              <div className="bg-danger h-100 flex-grow-1 px-3 d-flex flex-column justify-content-center align-items-center rounded-2">
+              <div
+                className="btn-actions bg-transparent px-3 py-2 d-flex justify-content-center align-items-center rounded-5 border border-2 border-danger text-danger gap-2 flex-grow-1 flex-lg-grow-0"
+                onClick={handleDelete}
+              >
                 <TbTrash />
                 Eliminar
               </div>
@@ -63,9 +71,7 @@ export const CardEvent = ({ event, showActions }) => {
 
 // Boton Editar //
 
-// onClick={() =>
-//                   navigate(`/user-events/edit/${event._id}`, { state: event })
-//                 }
+//
 
 // Boton Eliminar //
 

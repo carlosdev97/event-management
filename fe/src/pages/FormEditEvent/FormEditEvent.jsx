@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import api from "../../services/api";
+import { useAuth } from "../../contexts/AuthContext";
+import { toast } from "react-hot-toast";
 
 export const FormEditEvent = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const event = location.state;
+  const { logout } = useAuth();
 
   const [image, setImage] = useState(event.image);
   const [title, setTitle] = useState(event.title);
@@ -49,16 +52,22 @@ export const FormEditEvent = () => {
 
       setLoading(false);
       navigate("/user-events");
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        logout();
+        toast.error("La sesión ha caducado");
+        navigate("/login");
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="container p-5">
+    <div className="container p-md-5 min-vh-100">
       <div className="row justify-content-center">
         <form
-          className="col-lg-8 shadow rounded-3 p-5 d-flex flex-column gap-2"
+          className="col-lg-8 shadow rounded-3 p-4 d-flex flex-column gap-2"
           onSubmit={handleSubmit}
         >
           <div className="mb-3">
@@ -170,7 +179,7 @@ export const FormEditEvent = () => {
           </div>
           {loading ? (
             <button
-              className="btn bg-black text-white d-flex gap-2 align-items-center justify-content-center"
+              className="btn bg-success text-white d-flex gap-2 align-items-center justify-content-center"
               type="button"
               disabled
             >
@@ -181,7 +190,7 @@ export const FormEditEvent = () => {
               <span role="status">Cargando...</span>
             </button>
           ) : (
-            <button type="submit" className="btn bg-black text-white">
+            <button type="submit" className="btn bg-success text-white">
               Actualizar
             </button>
           )}
