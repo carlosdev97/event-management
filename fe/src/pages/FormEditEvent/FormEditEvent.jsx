@@ -64,10 +64,10 @@ export const FormEditEvent = () => {
   };
 
   return (
-    <div className="container p-md-5 min-vh-100">
-      <div className="row justify-content-center">
+    <div className="container p-md-5">
+      <div className="row py-4 p-md-0 justify-content-center align-items-center">
         <form
-          className="col-lg-8 shadow rounded-3 p-4 d-flex flex-column gap-2"
+          className="bg-white col-11 col-lg-8 shadow rounded-3 p-4 d-flex flex-column gap-2"
           onSubmit={handleSubmit}
         >
           <div className="mb-3">

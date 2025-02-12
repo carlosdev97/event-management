@@ -57,7 +57,9 @@ export const Home = () => {
               <CardEvent key={event._id} event={event} showActions={false} />
             ))
           ) : (
-            <p>No hay eventos disponibles</p>
+            <p className="min-vh-100 d-flex justify-content-center align-items-center">
+              No hay eventos disponibles
+            </p>
           )}
         </>
       )}

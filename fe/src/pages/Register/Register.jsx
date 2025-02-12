@@ -31,10 +31,10 @@ export const Register = () => {
   };
 
   return (
-    <div className="container p-5">
-      <div className="row justify-content-center">
+    <div className="container p-md-5 justify-content-center">
+      <div className="row vh-100 d-flex justify-content-center align-items-center">
         <form
-          className="col-lg-5 shadow rounded-3 p-5 d-flex flex-column gap-2"
+          className="bg-white col-10 col-md-6 col-lg-4 shadow rounded-3 p-4 d-flex flex-column gap-2"
           onSubmit={handleRegister}
         >
           <div className="mb-3">

@@ -49,7 +49,9 @@ export const NavBar = () => {
             </p>
           </div>
         ) : (
-          <></>
+          <Link className="navbar-brand d-md-none text-white" to={"/"}>
+            Ocassio
+          </Link>
         )}
         <div
           className="collapse navbar-collapse justify-content-between align-items-center p-2"

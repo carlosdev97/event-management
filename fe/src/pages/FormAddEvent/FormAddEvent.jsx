@@ -59,10 +59,10 @@ export const FormAddEvent = () => {
   };
 
   return (
-    <div className="container p-5">
-      <div className="row justify-content-center">
+    <div className="container p-md-5">
+      <div className="row py-4 p-md-0 justify-content-center align-items-center">
         <form
-          className="col-lg-8 shadow rounded-3 p-5 d-flex flex-column gap-2"
+          className="bg-white col-11 col-lg-8 shadow rounded-3 p-4 d-flex flex-column gap-2"
           onSubmit={handleSubmit}
         >
           <div className="mb-3">
@@ -143,15 +143,50 @@ export const FormAddEvent = () => {
               <label htmlFor="input" className="form-label fw-bold">
                 Ciudad
               </label>
-              <input
-                type="text"
-                className="form-control"
-                id="inputTitle"
-                placeholder="Ciudad"
+              <select
+                className="form-select"
+                aria-label="Selecciona una ciudad"
                 value={event.location.city}
                 onChange={(e) => handleLocationChange("city", e.target.value)}
-              />
+              >
+                <option value="">Ciudad</option>
+                <option value="Arauca">Arauca</option>
+                <option value="Armenia">Armenia</option>
+                <option value="Barranquilla">Barranquilla</option>
+                <option value="Bogotá">Bogotá</option>
+                <option value="Bucaramanga">Bucaramanga</option>
+                <option value="Cali">Cali</option>
+                <option value="Cartagena">Cartagena</option>
+                <option value="Cúcuta">Cúcuta</option>
+                <option value="Florencia">Florencia</option>
+                <option value="Inírida">Inírida</option>
+                <option value="Ibagué">Ibagué</option>
+                <option value="Leticia">Leticia</option>
+                <option value="Manizales">Manizales</option>
+                <option value="Medellín">Medellín</option>
+                <option value="Mitú">Mitú</option>
+                <option value="Mocoa">Mocoa</option>
+                <option value="Montería">Montería</option>
+                <option value="Neiva">Neiva</option>
+                <option value="Pasto">Pasto</option>
+                <option value="Pereira">Pereira</option>
+                <option value="Popayán">Popayán</option>
+                <option value="Puerto Carreño">Puerto Carreño</option>
+                <option value="Quibdó">Quibdó</option>
+                <option value="Riohacha">Riohacha</option>
+                <option value="San Andrés">San Andrés</option>
+                <option value="San José del Guaviare">
+                  San José del Guaviare
+                </option>
+                <option value="Santa Marta">Santa Marta</option>
+                <option value="Sincelejo">Sincelejo</option>
+                <option value="Tunja">Tunja</option>
+                <option value="Valledupar">Valledupar</option>
+                <option value="Villavicencio">Villavicencio</option>
+                <option value="Yopal">Yopal</option>
+              </select>
             </div>
+
             <div className="col-lg-4">
               <label htmlFor="inputCountry" className="form-label fw-bold">
                 País
@@ -173,7 +208,7 @@ export const FormAddEvent = () => {
               Descripción
             </label>
             <textarea
-              className="form-control"
+              className="form-control resize-none"
               id="inputDescription"
               placeholder="Descripción"
               value={event.description}

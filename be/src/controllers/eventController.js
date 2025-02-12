@@ -35,12 +35,35 @@ exports.createEvent = async (req, res) => {
         .json({ success: false, message: "Usuario no encontrado" });
     }
 
+    // Función para formatear la hora en formato de 12 horas
+    const formatTimeTo12Hours = (time) => {
+      const [hour, minute] = time.split(":"); // Divide la hora y los minutos
+      let period = "a.m."; // Por defecto, asumimos que es a.m.
+
+      let formattedHour = parseInt(hour, 10);
+      if (formattedHour >= 12) {
+        period = "p.m.";
+        if (formattedHour > 12) {
+          formattedHour -= 12; // Convierte a formato de 12 horas
+        }
+      }
+
+      // Asegura que la hora y los minutos tengan dos dígitos
+      const formattedMinute = minute.padStart(2, "0");
+      formattedHour = formattedHour.toString().padStart(2, "0");
+
+      return `${formattedHour}:${formattedMinute} ${period}`;
+    };
+
+    // Formatea la hora antes de guardarla
+    const formattedTime = formatTimeTo12Hours(eventTime);
+
     const newEvent = await Event.create({
       image,
       title,
       description,
       eventDate,
-      eventTime,
+      eventTime: formattedTime,
       location,
       createdBy: userId,
     });
@@ -65,18 +88,14 @@ exports.getAllEvents = async (req, res) => {
   try {
     const events = await Event.find();
 
-    if (events.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "No se encontraron eventos",
-        events,
-      });
-    }
-
+    // Siempre devuelve un estado 200, incluso si no hay eventos
     res.status(200).json({
       success: true,
-      message: "Eventos obtenidos correctamente",
-      events,
+      message:
+        events.length === 0
+          ? "No se encontraron eventos"
+          : "Eventos obtenidos correctamente",
+      events: events,
     });
   } catch (error) {
     res.status(500).json({
