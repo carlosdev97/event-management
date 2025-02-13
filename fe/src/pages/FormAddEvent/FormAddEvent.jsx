@@ -39,7 +39,7 @@ export const FormAddEvent = () => {
       console.log(event);
 
       const response = await api.post(
-        "http://localhost:5000/api/events/create",
+        "https://event-management-api-0kcl.onrender.com/api/events/create",
         event
       );
 

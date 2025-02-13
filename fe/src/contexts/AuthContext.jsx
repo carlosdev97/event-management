@@ -28,10 +28,13 @@ export const AuthProvider = ({ children }) => {
     setError(null);
 
     try {
-      const response = await api.post("http://localhost:5000/api/users/login", {
-        email,
-        password,
-      });
+      const response = await api.post(
+        "https://event-management-api-0kcl.onrender.com/api/users/login",
+        {
+          email,
+          password,
+        }
+      );
 
       const data = await response.data;
 

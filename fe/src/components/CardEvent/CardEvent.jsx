@@ -7,7 +7,9 @@ export const CardEvent = ({ event, showActions }) => {
 
   const handleDelete = async () => {
     try {
-      await api.delete(`http://localhost:5000/api/events/${event._id}`);
+      await api.delete(
+        `https://event-management-api-0kcl.onrender.com/api/events/${event._id}`
+      );
       window.location.reload();
     } catch (error) {
       console.error("Error eliminando el evento:", error);
@@ -68,11 +70,3 @@ export const CardEvent = ({ event, showActions }) => {
     </div>
   );
 };
-
-// Boton Editar //
-
-//
-
-// Boton Eliminar //
-
-// onClick = { handleDelete };

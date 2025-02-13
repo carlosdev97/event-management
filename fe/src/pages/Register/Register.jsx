@@ -21,7 +21,10 @@ export const Register = () => {
 
     try {
       setLoading(true);
-      await api.post("http://localhost:5000/api/users/register", user);
+      await api.post(
+        "https://event-management-api-0kcl.onrender.com/api/users/register",
+        user
+      );
       navigate("/login");
     } catch (error) {
       console.error(error);

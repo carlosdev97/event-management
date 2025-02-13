@@ -10,7 +10,9 @@ export const Home = () => {
   useEffect(() => {
     const getEvents = async () => {
       try {
-        const response = await api.get("http://localhost:5000/api/events/all");
+        const response = await api.get(
+          "https://event-management-api-0kcl.onrender.com/api/events/all"
+        );
         setEvents(response.data.events);
       } catch (error) {
         console.error(error);
@@ -33,7 +35,7 @@ export const Home = () => {
 
     try {
       const response = await api.get(
-        `http://localhost:5000/api/events/filter?${queryString}`
+        `https://event-management-api-0kcl.onrender.com/api/events/filter?${queryString}`
       );
       setEvents(response.data.events);
     } catch (error) {

@@ -21,7 +21,7 @@ export const UserEvents = () => {
         setLoading(true);
 
         const response = await api.get(
-          `http://localhost:5000/api/events/${user.id}`
+          `https://event-management-api-0kcl.onrender.com/api/events/${user.id}`
         );
 
         const data = await response.data.events;
