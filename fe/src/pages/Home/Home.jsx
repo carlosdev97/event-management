@@ -55,9 +55,17 @@ export const Home = () => {
         <>
           <FilterEvents onFilter={handleFilter} />
           {events && events.length > 0 ? (
-            events.map((event) => (
-              <CardEvent key={event._id} event={event} showActions={false} />
-            ))
+            <div className="container">
+              <div className="row">
+                {events.map((event) => (
+                  <CardEvent
+                    key={event._id}
+                    event={event}
+                    showActions={false}
+                  />
+                ))}
+              </div>
+            </div>
           ) : (
             <p className="min-vh-100 d-flex justify-content-center align-items-center">
               No hay eventos disponibles

@@ -43,7 +43,7 @@ export const UserEvents = () => {
   }, [user, navigate, logout]);
 
   return (
-    <div className="container min-vh-100 my-4 flex-wrap">
+    <div className="container my-4">
       {loading ? (
         <div className="d-flex min-vh-100 justify-content-center align-items-center">
           <div className="spinner-border" role="status">
@@ -66,9 +66,13 @@ export const UserEvents = () => {
             </button>
           </Link>
           {events ? (
-            events.map((event) => (
-              <CardEvent key={event._id} event={event} showActions={true} />
-            ))
+            <div className="container">
+              <div className="row">
+                {events.map((event) => (
+                  <CardEvent key={event._id} event={event} showActions={true} />
+                ))}
+              </div>
+            </div>
           ) : (
             <p>No hay eventos disponibles</p>
           )}

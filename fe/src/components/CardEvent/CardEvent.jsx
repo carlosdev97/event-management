@@ -1,12 +1,5 @@
 import "./CardEvent.css";
-import {
-  TbCalendar,
-  TbClock,
-  TbBuildings,
-  TbMapPin,
-  TbTrash,
-  TbEdit,
-} from "react-icons/tb";
+import { TbCalendar, TbClock, TbBuildings, TbMapPin } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
 
@@ -24,61 +17,100 @@ export const CardEvent = ({ event, showActions }) => {
     }
   };
 
-  const date = new Date(event.date);
-  const options = { year: "numeric", month: "long", day: "numeric" };
-  const formattDate = date.toLocaleDateString("es-ES", options);
+  // Función para convertir la fecha a formato deseado
+
+  function formatDate(date) {
+    // Dividir la fecha en añ, mes y día
+
+    const [year, month, day] = date.split("-");
+
+    // Convertir el mes a nombre
+
+    const months = [
+      "enero",
+      "febrero",
+      "marzo",
+      "abril",
+      "mayo",
+      "junio",
+      "julio",
+      "agosto",
+      "septiembre",
+      "octubre",
+      "noviembre",
+      "diciembre",
+    ];
+
+    const monthName = months[parseInt(month, 10) - 1];
+
+    // Retornar la fecha en formato deseado
+
+    return `${day} de ${monthName} de ${year}`;
+  }
+
+  // Función para convertir la hora a formato de 12 horas
+
+  function convertTime(hour24) {
+    // Dividir la hora y los minutos
+    const [hour, minutes] = hour24.split(":");
+
+    // Convertir la hora a número
+    let hour12 = parseInt(hour, 10);
+
+    // Determinar si es a.m. o p.m.
+    const period = hour12 >= 12 ? "p.m." : "a.m.";
+
+    // Convertir a formato de 12 horas
+    if (hour12 > 12) {
+      hour12 -= 12;
+    } else if (hour12 === 0) {
+      hour12 = 12; // Medianoche es 12 a.m.
+    }
+
+    // Retornar la hora en formato de 12 horas con a.m. o p.m.
+    return `${hour12}:${minutes} ${period}`;
+  }
 
   return (
-    <div className="card mb-3" style={{ width: "100%" }}>
-      <div className="row g-0">
-        <div className="col-lg-2 col-sm-12">
-          <img
-            src={event.image}
-            className="img-fluid rounded-start col-sm-12"
-            alt="..."
-          />
-        </div>
-        <div className="col-lg-10 d-block d-lg-flex">
-          <div className="card-body col-lg-9">
-            <h5 className="card-title">{event.title}</h5>
-            <p className="card-text align-items-center d-flex gap-2 m-0">
-              <TbCalendar className="fs-5" /> {formattDate}
-            </p>
-            <p className="card-text align-items-center d-flex gap-2 m-0">
-              <TbClock className="fs-5" /> {event.time}
-            </p>
-            <p className="card-text align-items-center d-flex gap-2 m-0">
+    <div className="px-2 my-2 col-lg-4 col-md-6 col-sm-12">
+      <div className="card p-0">
+        <img src={event.image} className="card-img-top col" alt="..." />
+        <div className="card-body">
+          <h5 className="card-title">{event.title}</h5>
+          <div className="mb-3 d-flex flex-column gap-1">
+            <span className="d-flex justify-content-start align-items-center gap-2">
+              <TbCalendar className="fs-5" /> {formatDate(event.date)}
+            </span>
+            <span className="d-flex justify-content-start align-items-center gap-2">
+              <TbClock className="fs-5" /> {convertTime(event.time)}
+            </span>
+            <span className="d-flex justify-content-start align-items-center gap-2">
               <TbBuildings className="fs-5" /> {event.location.place}
-            </p>
-            <div className="d-flex gap-2">
+            </span>
+            <span className="d-flex justify-content-start align-items-center gap-2">
               <TbMapPin className="fs-5" />
-              <p className="card-text">
-                {event.location.address}, {event.location.city}
-              </p>
-            </div>
+              {event.location.city}
+            </span>
           </div>
           {showActions ? (
-            <div className="col-lg-2 d-flex flex-lg-column justify-content-center gap-lg-2 mx-lg-2">
-              <div
-                className="btn-actions bg-transparent px-3 py-2 d-flex justify-content-center align-items-center rounded-5 border border-2 border-success text-success gap-2 flex-grow-1 flex-lg-grow-0"
+            <div className="col d-flex gap-2">
+              <button
+                className="btn btn-success"
                 onClick={() => {
                   console.log(event);
                   navigate(`/user-events/edit/${event._id}`, { state: event });
                 }}
               >
-                <TbEdit />
                 Editar
-              </div>
-              <div
-                className="btn-actions bg-transparent px-3 py-2 d-flex justify-content-center align-items-center rounded-5 border border-2 border-danger text-danger gap-2 flex-grow-1 flex-lg-grow-0"
-                onClick={handleDelete}
-              >
-                <TbTrash />
+              </button>
+              <button className="btn btn-danger" onClick={handleDelete}>
                 Eliminar
-              </div>
+              </button>
             </div>
           ) : (
-            <></>
+            <a href="#" className="btn btn-primary">
+              Ver más
+            </a>
           )}
         </div>
       </div>

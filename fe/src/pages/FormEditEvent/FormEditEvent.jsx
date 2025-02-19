@@ -22,40 +22,6 @@ export const FormEditEvent = () => {
   const [description, setDescription] = useState(event.description);
   const [loading, setLoading] = useState(false);
 
-  function convertTo24HourFormat(timeString) {
-    const [time, modifier] = timeString.split(" ");
-    let [hours, minutes] = time.split(":");
-
-    if (hours === "12") {
-      hours = "00";
-    }
-
-    if (modifier === "p.m.") {
-      hours = parseInt(hours, 10) + 12;
-    }
-
-    return `${hours}:${minutes}`;
-  }
-
-  function convertTo12HourFormat(time24) {
-    const [hours, minutes] = time24.split(":");
-    let period = "a.m.";
-    let hours12 = parseInt(hours, 10);
-
-    if (hours12 >= 12) {
-      period = "p.m.";
-      if (hours12 > 12) {
-        hours12 -= 12;
-      }
-    }
-
-    if (hours12 === 0) {
-      hours12 = 12; // Medianoche es 12 a.m.
-    }
-
-    return `0${hours12}:${minutes} ${period}`;
-  }
-
   if (!event) {
     navigate("/user-events");
     return null;
@@ -156,8 +122,8 @@ export const FormEditEvent = () => {
               type="time"
               className="form-control"
               id="inputEventDate"
-              value={convertTo24HourFormat(time)}
-              onChange={(e) => setTime(convertTo12HourFormat(e.target.value))}
+              value={time}
+              onChange={(e) => setTime(e.target.value)}
             />
           </div>
           <div className="row col d-flex gap-2 gap-md-0">

@@ -7,17 +7,16 @@ export const FormAddEvent = () => {
     image: "",
     title: "",
     description: "",
-    eventDate: "",
-    eventTime: "",
+    date: "",
+    time: "",
     location: {
+      place: "",
       address: "",
       city: "",
-      country: "",
     },
-    userId: null, // Aquí se almacenará el id del usuario logueado
+    userId: null,
   });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   const navigate = useNavigate();
 
@@ -27,16 +26,13 @@ export const FormAddEvent = () => {
       const parsedUser = JSON.parse(user);
       setEvent((prev) => ({ ...prev, userId: parsedUser.id }));
     }
-  }, []); // Se ejecuta solo una vez al montar el componente
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(event);
     try {
       setLoading(true);
-      setError(null);
-
-      console.log(typeof event);
-      console.log(event);
 
       const response = await api.post(
         "https://event-management-api-0kcl.onrender.com/api/events/create",
@@ -44,8 +40,8 @@ export const FormAddEvent = () => {
       );
 
       navigate("/user-events");
-    } catch (err) {
-      setError(err.message || "Error desconocido");
+    } catch (error) {
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -96,35 +92,48 @@ export const FormAddEvent = () => {
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="inputEventDate" className="form-label fw-bold">
+            <label htmlFor="inputDate" className="form-label fw-bold">
               Fecha
             </label>
             <input
               type="date"
               className="form-control"
-              id="inputEventDate"
-              value={event.eventDate}
+              id="inputDate"
+              value={event.date}
               onChange={(e) =>
-                setEvent((prev) => ({ ...prev, eventDate: e.target.value }))
+                setEvent((prev) => ({ ...prev, date: e.target.value }))
               }
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="inputEventTime" className="form-label fw-bold">
+            <label htmlFor="inputTime" className="form-label fw-bold">
               Hora
             </label>
             <input
               type="time"
               className="form-control"
-              id="inputEventTime"
-              value={event.eventTime}
+              id="inputTime"
+              value={event.time}
               onChange={(e) =>
-                setEvent((prev) => ({ ...prev, eventTime: e.target.value }))
+                setEvent((prev) => ({ ...prev, time: e.target.value }))
               }
             />
           </div>
           <div className="mb-3 row col d-flex">
             <div className="col-lg-4">
+              <label htmlFor="inputPlace" className="form-label fw-bold">
+                Lugar
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="inputPlace"
+                placeholder="Lugar"
+                value={event.location.place}
+                onChange={(e) => handleLocationChange("place", e.target.value)}
+              />
+            </div>
+            <div className="col-lg-4 mb-3">
               <label htmlFor="inputAddress" className="form-label fw-bold">
                 Dirección
               </label>
@@ -140,10 +149,11 @@ export const FormAddEvent = () => {
               />
             </div>
             <div className="col-lg-4">
-              <label htmlFor="input" className="form-label fw-bold">
+              <label htmlFor="inputCity" className="form-label fw-bold">
                 Ciudad
               </label>
               <select
+                id="inputCity"
                 className="form-select"
                 aria-label="Selecciona una ciudad"
                 value={event.location.city}
@@ -185,22 +195,6 @@ export const FormAddEvent = () => {
                 <option value="Villavicencio">Villavicencio</option>
                 <option value="Yopal">Yopal</option>
               </select>
-            </div>
-
-            <div className="col-lg-4">
-              <label htmlFor="inputCountry" className="form-label fw-bold">
-                País
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="inputCountry"
-                placeholder="País"
-                value={event.location.country}
-                onChange={(e) =>
-                  handleLocationChange("country", e.target.value)
-                }
-              />
             </div>
           </div>
           <div className="mb-3">
