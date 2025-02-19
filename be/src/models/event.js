@@ -7,12 +7,12 @@ const EventSchema = new mongoose.Schema({
   },
   title: { type: String, required: true },
   description: { type: String, required: true },
-  eventDate: { type: String, required: true },
-  eventTime: { type: String, required: true },
+  date: { type: String, required: true },
+  time: { type: String, required: true },
   location: {
+    place: { type: String, required: true },
     address: { type: String, required: true },
     city: { type: String, required: true },
-    country: { type: String, required: true },
   },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,

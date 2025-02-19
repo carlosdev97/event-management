@@ -17,7 +17,7 @@ export const Home = () => {
       } catch (error) {
         console.error(error);
       } finally {
-        setLoading(false); // Finalizar la carga del evento
+        setLoading(false);
       }
     };
 

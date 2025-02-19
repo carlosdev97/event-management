@@ -12,15 +12,49 @@ export const FormEditEvent = () => {
 
   const [image, setImage] = useState(event.image);
   const [title, setTitle] = useState(event.title);
-  const [eventDate, setEventDate] = useState(event.eventDate);
-  const [eventTime, setEventTime] = useState(event.eventTime);
+  const [date, setDate] = useState(event.date);
+  const [time, setTime] = useState(event.time);
   const [locationEvent, setLocationEvent] = useState({
+    place: event.location.place,
     address: event.location.address,
     city: event.location.city,
-    country: event.location.country,
   });
   const [description, setDescription] = useState(event.description);
   const [loading, setLoading] = useState(false);
+
+  function convertTo24HourFormat(timeString) {
+    const [time, modifier] = timeString.split(" ");
+    let [hours, minutes] = time.split(":");
+
+    if (hours === "12") {
+      hours = "00";
+    }
+
+    if (modifier === "p.m.") {
+      hours = parseInt(hours, 10) + 12;
+    }
+
+    return `${hours}:${minutes}`;
+  }
+
+  function convertTo12HourFormat(time24) {
+    const [hours, minutes] = time24.split(":");
+    let period = "a.m.";
+    let hours12 = parseInt(hours, 10);
+
+    if (hours12 >= 12) {
+      period = "p.m.";
+      if (hours12 > 12) {
+        hours12 -= 12;
+      }
+    }
+
+    if (hours12 === 0) {
+      hours12 = 12; // Medianoche es 12 a.m.
+    }
+
+    return `0${hours12}:${minutes} ${period}`;
+  }
 
   if (!event) {
     navigate("/user-events");
@@ -28,7 +62,10 @@ export const FormEditEvent = () => {
   }
 
   const handleLocationChange = (field, value) => {
-    setLocationEvent((prev) => ({ ...prev.location, [field]: value }));
+    setLocationEvent((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -37,12 +74,14 @@ export const FormEditEvent = () => {
     const updatedEvent = {
       image,
       title,
-      eventDate,
-      eventTime,
+      date,
+      time,
       location: locationEvent,
       description,
       userId: localStorage.getItem("userId"),
     };
+
+    console.log(updatedEvent);
 
     try {
       await api.put(
@@ -104,24 +143,37 @@ export const FormEditEvent = () => {
               type="date"
               className="form-control"
               id="inputEventDate"
-              value={eventDate}
-              onChange={(e) => setEventDate(e.target.value)}
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="inputEventTime" className="form-label fw-bold">
+            <label htmlFor="inputEventDate" className="form-label fw-bold">
               Hora
             </label>
             <input
               type="time"
               className="form-control"
-              id="inputEventTime"
-              value={eventTime}
-              onChange={(e) => setEventTime(e.target.value)}
+              id="inputEventDate"
+              value={convertTo24HourFormat(time)}
+              onChange={(e) => setTime(convertTo12HourFormat(e.target.value))}
             />
           </div>
-          <div className="mb-3 row col d-flex">
-            <div className="col-lg-4">
+          <div className="row col d-flex gap-2 gap-md-0">
+            <div className="col-lg-4 mb-3">
+              <label htmlFor="inputAddress" className="form-label fw-bold">
+                Lugar
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="inputAddress"
+                placeholder="Dirección"
+                value={locationEvent.place}
+                onChange={(e) => handleLocationChange("place", e.target.value)}
+              />
+            </div>
+            <div className="col-lg-4 mb-3">
               <label htmlFor="inputAddress" className="form-label fw-bold">
                 Dirección
               </label>
@@ -130,39 +182,58 @@ export const FormEditEvent = () => {
                 className="form-control"
                 id="inputAddress"
                 placeholder="Dirección"
-                value={event.location.address}
+                value={locationEvent.address}
                 onChange={(e) =>
                   handleLocationChange("address", e.target.value)
                 }
               />
             </div>
-            <div className="col-lg-4">
+            <div className="col-lg-4 mb-3">
               <label htmlFor="input" className="form-label fw-bold">
                 Ciudad
               </label>
-              <input
-                type="text"
-                className="form-control"
-                id="inputTitle"
-                placeholder="Ciudad"
-                value={event.location.city}
+              <select
+                className="form-select"
+                aria-label="Selecciona una ciudad"
+                value={locationEvent.city}
                 onChange={(e) => handleLocationChange("city", e.target.value)}
-              />
-            </div>
-            <div className="col-lg-4">
-              <label htmlFor="inputCountry" className="form-label fw-bold">
-                País
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="inputCountry"
-                placeholder="País"
-                value={event.location.country}
-                onChange={(e) =>
-                  handleLocationChange("country", e.target.value)
-                }
-              />
+              >
+                <option value="">Ciudad</option>
+                <option value="Arauca">Arauca</option>
+                <option value="Armenia">Armenia</option>
+                <option value="Barranquilla">Barranquilla</option>
+                <option value="Bogotá">Bogotá</option>
+                <option value="Bucaramanga">Bucaramanga</option>
+                <option value="Cali">Cali</option>
+                <option value="Cartagena">Cartagena</option>
+                <option value="Cúcuta">Cúcuta</option>
+                <option value="Florencia">Florencia</option>
+                <option value="Inírida">Inírida</option>
+                <option value="Ibagué">Ibagué</option>
+                <option value="Leticia">Leticia</option>
+                <option value="Manizales">Manizales</option>
+                <option value="Medellín">Medellín</option>
+                <option value="Mitú">Mitú</option>
+                <option value="Mocoa">Mocoa</option>
+                <option value="Montería">Montería</option>
+                <option value="Neiva">Neiva</option>
+                <option value="Pasto">Pasto</option>
+                <option value="Pereira">Pereira</option>
+                <option value="Popayán">Popayán</option>
+                <option value="Puerto Carreño">Puerto Carreño</option>
+                <option value="Quibdó">Quibdó</option>
+                <option value="Riohacha">Riohacha</option>
+                <option value="San Andrés">San Andrés</option>
+                <option value="San José del Guaviare">
+                  San José del Guaviare
+                </option>
+                <option value="Santa Marta">Santa Marta</option>
+                <option value="Sincelejo">Sincelejo</option>
+                <option value="Tunja">Tunja</option>
+                <option value="Valledupar">Valledupar</option>
+                <option value="Villavicencio">Villavicencio</option>
+                <option value="Yopal">Yopal</option>
+              </select>
             </div>
           </div>
           <div className="mb-3">

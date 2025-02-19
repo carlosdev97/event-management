@@ -1,7 +1,15 @@
 import "./CardEvent.css";
-import { TbCalendar, TbClock, TbMapPin, TbTrash, TbEdit } from "react-icons/tb";
+import {
+  TbCalendar,
+  TbClock,
+  TbBuildings,
+  TbMapPin,
+  TbTrash,
+  TbEdit,
+} from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
+
 export const CardEvent = ({ event, showActions }) => {
   const navigate = useNavigate();
 
@@ -15,6 +23,10 @@ export const CardEvent = ({ event, showActions }) => {
       console.error("Error eliminando el evento:", error);
     }
   };
+
+  const date = new Date(event.date);
+  const options = { year: "numeric", month: "long", day: "numeric" };
+  const formattDate = date.toLocaleDateString("es-ES", options);
 
   return (
     <div className="card mb-3" style={{ width: "100%" }}>
@@ -30,16 +42,18 @@ export const CardEvent = ({ event, showActions }) => {
           <div className="card-body col-lg-9">
             <h5 className="card-title">{event.title}</h5>
             <p className="card-text align-items-center d-flex gap-2 m-0">
-              <TbCalendar className="fs-5" /> {event.eventDate}
+              <TbCalendar className="fs-5" /> {formattDate}
             </p>
             <p className="card-text align-items-center d-flex gap-2 m-0">
-              <TbClock className="fs-5" /> {event.eventTime}
+              <TbClock className="fs-5" /> {event.time}
+            </p>
+            <p className="card-text align-items-center d-flex gap-2 m-0">
+              <TbBuildings className="fs-5" /> {event.location.place}
             </p>
             <div className="d-flex gap-2">
               <TbMapPin className="fs-5" />
               <p className="card-text">
-                {event.location.address}, {event.location.city},{" "}
-                {event.location.country}
+                {event.location.address}, {event.location.city}
               </p>
             </div>
           </div>
@@ -47,9 +61,10 @@ export const CardEvent = ({ event, showActions }) => {
             <div className="col-lg-2 d-flex flex-lg-column justify-content-center gap-lg-2 mx-lg-2">
               <div
                 className="btn-actions bg-transparent px-3 py-2 d-flex justify-content-center align-items-center rounded-5 border border-2 border-success text-success gap-2 flex-grow-1 flex-lg-grow-0"
-                onClick={() =>
-                  navigate(`/user-events/edit/${event._id}`, { state: event })
-                }
+                onClick={() => {
+                  console.log(event);
+                  navigate(`/user-events/edit/${event._id}`, { state: event });
+                }}
               >
                 <TbEdit />
                 Editar

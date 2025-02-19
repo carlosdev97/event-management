@@ -3,22 +3,15 @@ const Event = require("../models/event");
 
 exports.createEvent = async (req, res) => {
   try {
-    const {
-      image,
-      title,
-      description,
-      eventDate,
-      eventTime,
-      location,
-      userId,
-    } = req.body;
+    const { image, title, description, date, time, place, location, userId } =
+      req.body;
 
     if (
       !image ||
       !title ||
       !description ||
-      !eventDate ||
-      !eventTime ||
+      !date ||
+      !time ||
       !location ||
       !userId
     ) {
@@ -27,48 +20,29 @@ exports.createEvent = async (req, res) => {
         .json({ success: false, message: "Faltan campos obligatorios" });
     }
 
-    const user = await User.findById(userId);
-
-    if (!user) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Usuario no encontrado" });
-    }
-
-    // Función para formatear la hora en formato de 12 horas
-    const formatTimeTo12Hours = (time) => {
-      const [hour, minute] = time.split(":"); // Divide la hora y los minutos
-      let period = "a.m."; // Por defecto, asumimos que es a.m.
-
-      let formattedHour = parseInt(hour, 10);
-      if (formattedHour >= 12) {
-        period = "p.m.";
-        if (formattedHour > 12) {
-          formattedHour -= 12; // Convierte a formato de 12 horas
-        }
-      }
-
-      // Asegura que la hora y los minutos tengan dos dígitos
-      const formattedMinute = minute.padStart(2, "0");
-      formattedHour = formattedHour.toString().padStart(2, "0");
-
-      return `${formattedHour}:${formattedMinute} ${period}`;
-    };
-
-    // Formatea la hora antes de guardarla
-    const formattedTime = formatTimeTo12Hours(eventTime);
-
     const newEvent = await Event.create({
       image,
       title,
       description,
-      eventDate,
-      eventTime: formattedTime,
+      date,
+      time,
+      place,
       location,
       createdBy: userId,
     });
 
-    await User.findByIdAndUpdate(userId, { $push: { events: newEvent._id } });
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $push: { events: newEvent._id } },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      await Event.findByIdAndDelete(newEvent._id); // Eliminar el evento si el usuario no existe
+      return res
+        .status(404)
+        .json({ success: false, message: "Usuario no encontrado" });
+    }
 
     res.status(201).json({
       success: true,
@@ -88,7 +62,6 @@ exports.getAllEvents = async (req, res) => {
   try {
     const events = await Event.find();
 
-    // Siempre devuelve un estado 200, incluso si no hay eventos
     res.status(200).json({
       success: true,
       message:
@@ -134,7 +107,7 @@ exports.updateEvent = async (req, res) => {
   try {
     const { eventId } = req.params;
 
-    const { title, description, eventDate, eventTime, location } = req.body;
+    const { image, title, date, time, location, description } = req.body;
 
     const event = await Event.findById(eventId);
 
@@ -147,11 +120,13 @@ exports.updateEvent = async (req, res) => {
     const updatedEvent = await Event.findByIdAndUpdate(
       eventId,
       {
+        image,
         title,
-        description,
-        eventDate,
-        eventTime,
+        date,
+        time,
         location,
+        description,
+        createdBy: userId,
       },
       { new: true }
     );
