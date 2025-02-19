@@ -126,7 +126,6 @@ exports.updateEvent = async (req, res) => {
         time,
         location,
         description,
-        createdBy: userId,
       },
       { new: true }
     );

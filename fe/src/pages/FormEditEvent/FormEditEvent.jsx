@@ -85,7 +85,8 @@ export const FormEditEvent = () => {
 
     try {
       await api.put(
-        `https://event-management-api-0kcl.onrender.com/api/events/${event._id}`,
+        // `https://event-management-api-0kcl.onrender.com/api/events/${event._id}`
+        `http://localhost:5000/api/events/${event._id}`,
         updatedEvent
       );
 
