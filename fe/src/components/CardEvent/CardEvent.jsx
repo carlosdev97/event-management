@@ -1,7 +1,8 @@
 import { TbCalendar, TbClock, TbBuildings, TbMapPin } from "react-icons/tb";
-import { navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const CardEvent = ({ event, showActions, onDelete }) => {
+  const navigate = useNavigate();
   function formatDate(date) {
     // Función para convertir la fecha a formato deseado
 
