@@ -15,7 +15,7 @@ function App() {
     <Router>
       <Toaster
         toastOptions={{ duration: 5000 }}
-        position="bottom-right"
+        position="top-center"
         reverseOrder={false}
       />
       <NavBar />

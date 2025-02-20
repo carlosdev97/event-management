@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
+import { useAuth } from "../../contexts/AuthContext";
+import { toast } from "react-hot-toast";
 
 export const FormAddEvent = () => {
   const [event, setEvent] = useState({
@@ -18,6 +20,8 @@ export const FormAddEvent = () => {
   });
   const [loading, setLoading] = useState(false);
 
+  const { logout } = useAuth();
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,14 +38,21 @@ export const FormAddEvent = () => {
     try {
       setLoading(true);
 
-      const response = await api.post(
+      await api.post(
         "https://event-management-api-0kcl.onrender.com/api/events/create",
         event
       );
 
+      toast.success("¡Evento creado exitosamente!");
       navigate("/user-events");
     } catch (error) {
+      if (error.response && error.response.status === 401) {
+        logout();
+        toast.error("La sesión ha caducado");
+        navigate("/login");
+      }
       console.error(error);
+      toast.error("¡Error al crear evento!");
     } finally {
       setLoading(false);
     }

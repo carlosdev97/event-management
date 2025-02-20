@@ -28,7 +28,7 @@ export const Login = () => {
 
   return (
     <div className="container p-md-5">
-      <div className="row vh-100 d-flex justify-content-center align-items-center">
+      <div className="row min-vh-100 d-flex justify-content-center align-items-center">
         <form
           className="bg-white col-10 col-md-6 col-lg-4 shadow rounded-3 p-4 d-flex flex-column gap-3"
           onSubmit={handleLogin}
@@ -93,7 +93,7 @@ export const Login = () => {
                 className="spinner-border spinner-border-sm"
                 aria-hidden="true"
               ></span>
-              <span role="status">Cargando...</span>
+              <span role="status">Ingresando...</span>
             </button>
           ) : (
             <button type="submit" className="btn bg-black text-white">

@@ -43,7 +43,7 @@ export const UserEvents = () => {
   }, [user, navigate, logout]);
 
   return (
-    <div className="container my-4">
+    <div className="container min-vh-100 my-4">
       {loading ? (
         <div className="d-flex min-vh-100 justify-content-center align-items-center">
           <div className="spinner-border" role="status">

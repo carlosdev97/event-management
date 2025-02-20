@@ -2,6 +2,7 @@ import "./CardEvent.css";
 import { TbCalendar, TbClock, TbBuildings, TbMapPin } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
+import { toast } from "react-hot-toast";
 
 export const CardEvent = ({ event, showActions }) => {
   const navigate = useNavigate();
@@ -11,8 +12,10 @@ export const CardEvent = ({ event, showActions }) => {
       await api.delete(
         `https://event-management-api-0kcl.onrender.com/api/events/${event._id}`
       );
-      window.location.reload();
+      toast.success("¡Evento eliminado correctamente!");
+      navigate("/user-events");
     } catch (error) {
+      toast.error("¡Error al eliminar el evento!");
       console.error("Error eliminando el evento:", error);
     }
   };
@@ -76,7 +79,7 @@ export const CardEvent = ({ event, showActions }) => {
       <div className="card p-0">
         <img src={event.image} className="card-img-top col" alt="..." />
         <div className="card-body">
-          <h5 className="card-title">{event.title}</h5>
+          <h5 className="card-title text-truncate">{event.title}</h5>
           <div className="mb-3 d-flex flex-column gap-1">
             <span className="d-flex justify-content-start align-items-center gap-2">
               <TbCalendar className="fs-5" /> {formatDate(event.date)}

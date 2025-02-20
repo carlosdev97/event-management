@@ -57,6 +57,7 @@ export const FormEditEvent = () => {
       );
 
       setLoading(false);
+      toast.success("¡Evento editado exitosamente!");
       navigate("/user-events");
     } catch (error) {
       if (error.response && error.response.status === 401) {
@@ -64,6 +65,7 @@ export const FormEditEvent = () => {
         toast.error("La sesión ha caducado");
         navigate("/login");
       }
+      toast.error("¡Error al editar el evento!");
     } finally {
       setLoading(false);
     }

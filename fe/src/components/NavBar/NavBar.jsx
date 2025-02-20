@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import { TbDoorExit, TbUserCircle } from "react-icons/tb";
+import { TbLogout, TbUserCircle } from "react-icons/tb";
 import "./NavBar.css";
 
 export const NavBar = () => {
@@ -67,7 +67,7 @@ export const NavBar = () => {
                 <p className="m-0 d-none d-md-block">
                   Hola, {user.name.split(" ")[0]}
                 </p>
-                <TbDoorExit
+                <TbLogout
                   className="btn-logout-custom text-danger fs-4 cursor-pointer d-none d-md-block"
                   onClick={handleLogout}
                 />
