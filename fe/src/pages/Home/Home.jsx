@@ -33,6 +33,8 @@ export const Home = () => {
 
     const queryString = new URLSearchParams(queryParams).toString();
 
+    console.log(queryString);
+
     try {
       const response = await api.get(
         `https://event-management-api-0kcl.onrender.com/api/events/filter?${queryString}`
@@ -68,7 +70,7 @@ export const Home = () => {
             </div>
           ) : (
             <p className="min-vh-100 d-flex justify-content-center align-items-center">
-              No hay eventos disponibles
+              No hay eventos disponibles.
             </p>
           )}
         </>

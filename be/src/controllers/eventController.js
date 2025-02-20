@@ -176,7 +176,7 @@ exports.filterEvents = async (req, res) => {
     const query = {};
 
     if (date) {
-      query.eventDate = date;
+      query.date = date;
     }
 
     // Filtro por ciudad

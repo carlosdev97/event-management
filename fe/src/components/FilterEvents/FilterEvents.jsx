@@ -71,10 +71,7 @@ export const FilterEvents = ({ onFilter }) => {
           value={date}
           onChange={(e) => setDate(e.target.value)}
         />
-        <button
-          className="btn btn-outline-success d-none d-lg-block"
-          type="submit"
-        >
+        <button className="btn btn-success d-none d-lg-block" type="submit">
           Buscar
         </button>
       </form>
