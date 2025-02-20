@@ -1,4 +1,3 @@
-import "./CardEvent.css";
 import { TbCalendar, TbClock, TbBuildings, TbMapPin } from "react-icons/tb";
 import { navigate } from "react-router-dom";
 
