@@ -7,11 +7,25 @@ import { TbPlus } from "react-icons/tb";
 import { toast } from "react-hot-toast";
 
 export const UserEvents = () => {
-  const { user, logout } = useAuth(); // Asegúrate de que tu AuthContext tenga una función logout
+  const { user, logout } = useAuth();
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refresh, setRefresh] = useState(false);
 
   const navigate = useNavigate();
+
+  const handleDeleteEvent = async (id) => {
+    try {
+      await api.delete(
+        `https://event-management-api-0kcl.onrender.com/api/events/${id}`
+      );
+      toast.success("¡Evento eliminado correctamente!");
+      setRefresh((prev) => !prev);
+    } catch (error) {
+      toast.error("¡Error al eliminar el evento!");
+      console.error("Error eliminando el evento:", error);
+    }
+  };
 
   useEffect(() => {
     const getUserEvents = async () => {
@@ -40,7 +54,7 @@ export const UserEvents = () => {
     };
 
     getUserEvents();
-  }, [user, navigate, logout]);
+  }, [user, navigate, logout, refresh]);
 
   return (
     <div className="container min-vh-100 my-4">
@@ -69,7 +83,12 @@ export const UserEvents = () => {
             <div className="container">
               <div className="row">
                 {events.map((event) => (
-                  <CardEvent key={event._id} event={event} showActions={true} />
+                  <CardEvent
+                    key={event._id}
+                    event={event}
+                    showActions={true}
+                    onDelete={() => handleDeleteEvent(event._id)}
+                  />
                 ))}
               </div>
             </div>

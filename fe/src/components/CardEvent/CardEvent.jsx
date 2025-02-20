@@ -1,35 +1,16 @@
 import "./CardEvent.css";
 import { TbCalendar, TbClock, TbBuildings, TbMapPin } from "react-icons/tb";
-import { useNavigate } from "react-router-dom";
-import api from "../../services/api";
-import { toast } from "react-hot-toast";
+import { navigate } from "react-router-dom";
 
-export const CardEvent = ({ event, showActions }) => {
-  const navigate = useNavigate();
-
-  const handleDelete = async () => {
-    try {
-      await api.delete(
-        `https://event-management-api-0kcl.onrender.com/api/events/${event._id}`
-      );
-      toast.success("¡Evento eliminado correctamente!");
-      navigate("/user-events");
-    } catch (error) {
-      toast.error("¡Error al eliminar el evento!");
-      console.error("Error eliminando el evento:", error);
-    }
-  };
-
-  // Función para convertir la fecha a formato deseado
-
+export const CardEvent = ({ event, showActions, onDelete }) => {
   function formatDate(date) {
-    // Dividir la fecha en añ, mes y día
+    // Función para convertir la fecha a formato deseado
 
-    const [year, month, day] = date.split("-");
-
-    // Convertir el mes a nombre
+    const [year, month, day] = date.split("-"); // Dividir la fecha en año, mes y día
 
     const months = [
+      // Convertir el mes a nombre
+
       "enero",
       "febrero",
       "marzo",
@@ -55,15 +36,19 @@ export const CardEvent = ({ event, showActions }) => {
 
   function convertTime(hour24) {
     // Dividir la hora y los minutos
+
     const [hour, minutes] = hour24.split(":");
 
     // Convertir la hora a número
+
     let hour12 = parseInt(hour, 10);
 
     // Determinar si es a.m. o p.m.
+
     const period = hour12 >= 12 ? "p.m." : "a.m.";
 
     // Convertir a formato de 12 horas
+
     if (hour12 > 12) {
       hour12 -= 12;
     } else if (hour12 === 0) {
@@ -71,6 +56,7 @@ export const CardEvent = ({ event, showActions }) => {
     }
 
     // Retornar la hora en formato de 12 horas con a.m. o p.m.
+
     return `${hour12}:${minutes} ${period}`;
   }
 
@@ -106,7 +92,7 @@ export const CardEvent = ({ event, showActions }) => {
               >
                 Editar
               </button>
-              <button className="btn btn-danger" onClick={handleDelete}>
+              <button className="btn btn-danger" onClick={onDelete}>
                 Eliminar
               </button>
             </div>
