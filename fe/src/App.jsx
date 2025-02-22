@@ -7,6 +7,7 @@ import { Register } from "./pages/Register/Register";
 import { UserEvents } from "./pages/UserEvents/UserEvents";
 import { FormAddEvent } from "./pages/FormAddEvent/FormAddEvent";
 import { FormEditEvent } from "./pages/FormEditEvent/FormEditEvent";
+import { DetailsEvent } from "./pages/DetailsEvent/DetailsEvent";
 import { Footer } from "./components/Footer/Footer";
 import { Toaster } from "react-hot-toast";
 
@@ -26,6 +27,7 @@ function App() {
         <Route path="/user-events" element={<UserEvents />} />
         <Route path="/user-events/add" element={<FormAddEvent />} />
         <Route path="/user-events/edit/:eventId" element={<FormEditEvent />} />
+        <Route path="/event/:eventId" element={<DetailsEvent />} />
       </Routes>
       <Footer />
     </Router>

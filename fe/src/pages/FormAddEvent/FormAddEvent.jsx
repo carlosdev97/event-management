@@ -232,7 +232,7 @@ export const FormAddEvent = () => {
                 className="spinner-border spinner-border-sm"
                 aria-hidden="true"
               ></span>
-              <span role="status">Cargando...</span>
+              <span role="status">Agregando...</span>
             </button>
           ) : (
             <button type="submit" className="btn bg-black text-white">

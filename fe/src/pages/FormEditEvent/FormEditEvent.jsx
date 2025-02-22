@@ -57,7 +57,7 @@ export const FormEditEvent = () => {
       );
 
       setLoading(false);
-      toast.success("¡Evento editado exitosamente!");
+      toast.success("¡Evento actualizado exitosamente!");
       navigate("/user-events");
     } catch (error) {
       if (error.response && error.response.status === 401) {
@@ -65,7 +65,7 @@ export const FormEditEvent = () => {
         toast.error("La sesión ha caducado");
         navigate("/login");
       }
-      toast.error("¡Error al editar el evento!");
+      toast.error("¡Error al actualizar el evento!");
     } finally {
       setLoading(false);
     }
@@ -227,7 +227,7 @@ export const FormEditEvent = () => {
                 className="spinner-border spinner-border-sm"
                 aria-hidden="true"
               ></span>
-              <span role="status">Cargando...</span>
+              <span role="status">Actualizando...</span>
             </button>
           ) : (
             <button type="submit" className="btn bg-success text-white">

@@ -86,7 +86,6 @@ export const CardEvent = ({ event, showActions, onDelete }) => {
               <button
                 className="btn btn-success"
                 onClick={() => {
-                  console.log(event);
                   navigate(`/user-events/edit/${event._id}`, { state: event });
                 }}
               >
@@ -97,9 +96,12 @@ export const CardEvent = ({ event, showActions, onDelete }) => {
               </button>
             </div>
           ) : (
-            <a href="#" className="btn btn-primary">
+            <button
+              className="btn btn-primary"
+              onClick={() => navigate(`/event/${event._id}`, { state: event })}
+            >
               Ver más
-            </a>
+            </button>
           )}
         </div>
       </div>
